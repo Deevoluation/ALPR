@@ -1,0 +1,25 @@
+
+	The Work flow of the Program:
+	
+	Main.main    ------> DetectChars.loadKNNDataAndTrainKNN() --> Load classification.txt and flattened_image.txt to train a knn classifier for handwritten digit. return the classifier object
+						 (create an object of the OpenCV knn classifier)
+						 
+				-------> DetectPlates.detectPlatesInScene()  ----> Detecting all the possible plates in the image
+						 
+						 											-----> Preprocess.preprocess() ---> convert the image to grayscale,increase the visibility of plate_area(by blurring and thresholding) ,return the grayscale and thresholded object.
+						 											-----> findPossibleCharsInScene() ---> extract all the contours from the image,
+						 																					---> PossibleChar.PossibleChar() ---> create a class object of each conti=our that contain physical informations of that particular contour
+						 																					---> DetectChars.checkIfPossibleChar() ---> A small check that if the current contour object can be a character or not, if yes than append the contour to listOfPossibleChars 
+						 																					---> return listOfPossibleChars 	 					
+						 											-----> re-arrange the one big list of chars into a list of lists of matching chars,where each list can be a license plate in itself.
+						 													---> return listOfListsOfMatchingChars
+						 											-----> extractPlate ---> Attempt to extract plates.
+						 																---> PossiblePlate.PossiblePlate() --> Make a class object of the Possible Plate class to store the desires informations of the detected plates
+						 																---> DetectChars.distanceBetweenChars	
+						 																---> return possiblePlate
+						 											-----> return listOfPossiblePlates
+				 ------> DetectChars.detectCharsInPlates   -----> detect chars in plates
+														   -----> return listOfPossiblePlates
+														   
+				-------> drawRedRectangleAroundPlate ----> Draw a box around the prabable position of the name plates
+				-------> writeLicensePlateCharsOnImage ---->  write license plate text on the image

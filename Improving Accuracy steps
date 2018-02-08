@@ -1,0 +1,24 @@
+
+	with equalization and Denoising ---> 40 %.
+	Initial KNN Classifier ---> 68.89%  ,time = 171.71 sec
+	
+	Just CNN classifier ---> 43.39 , time = 494.60 sec
+	without equalization,sharpening,resizing and denoising and with mask-plate-Binary_INV ---> 54.889 time = 2774.709 sec
+	
+	with equalization and with mask-plate-Binary_INV ---> 55.39 % time = 1243.59 sec
+	with equalization and resizing with mask-plate-Binary_INV ---> 53.61 ,time = 698 sec
+	with equalization and with mask-plate-Binary_INV-and-OTSU ---> 56.14 % time = 1759.59 sec
+	
+	with equalization and with mask-plate-Binary_INV-and-OTSU,with sharpening with kernel 4 ---> 46.13 % time = 4956.67 sec
+	with equalization and with mask-plate-Binary_INV-and-OTSU,with sharpening with kernel  ---> 49.14 % time = 4023.67 sec
+	
+	without equalization and with mask-plate-Binary_INV-and-OTSU,without sharpening with kernel  ---> 60 % time = 494.67 sec
+	without equalization and with mask-plate-Binary_INV-and-OTSU,without sharpening with kernel,with resize  ---> 60.13 % time = 441.67 sec
+	without equalization and with mask-plate-Binary_INV-and-OTSU,without sharpening with kernel,with resize,with denoising  ---> 58.13 % time = 1641.67 sec
+	without equalization and with mask-plate-Binary_INV-and-OTSU,without sharpening with kernel,with resize(1.4,1.4) and add border(8,8,8) to the cropped image.  ---> 78.7% time = 368.6 sec
+	without equalization and with mask-plate-Binary_INV-and-OTSU,without sharpening with kernel,without resize and add border(8,8,8) to the cropped image.  ---> 71.9% time = 241.8 sec
+	without equalization and with mask-plate-Binary_INV-and-OTSU,without sharpening with kernel,resize(1.6,1.3) and add border(7,7,7) to the cropped image.  ---> 74.9% time = 285.5 sec
+	
+	
+	
+	
