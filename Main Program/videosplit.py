@@ -30,7 +30,7 @@ def Launch(video):
 
     count = 0
     success = True
-    framesWeNeed = 30
+    framesWeNeed = 10
     interval = round(totalFrames/framesWeNeed)
     while (success):
         
