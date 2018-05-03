@@ -11,9 +11,10 @@ from keras.optimizers import Adam
 from keras.layers.pooling import MaxPooling2D
 from keras.utils import to_categorical
 import Main
+from PIL import Image
 import Preprocess
 import PossibleChar
-import h5py
+import matplotlib.pyplot as plt
 from keras.models import load_model
 from keras.optimizers import RMSprop
 
@@ -67,19 +68,24 @@ def detectCharsInPlates(listOfPossiblePlates):
         possiblePlate.imgGrayscale, possiblePlate.imgThresh = Preprocess.preprocess(possiblePlate.imgPlate)     # preprocess to get grayscale and threshold images
 
         if Main.showSteps == True: # show steps ###################################################
-            cv2.imshow("imgPlate", possiblePlate.imgPlate)
-            cv2.imshow("imgGrayscale", possiblePlate.imgGrayscale)
-            cv2.imshow("imgThresh", possiblePlate.imgThresh)
-            cv2.waitKey(0)
-                        # increase size of plate image for easier viewing and char detection
+            Plate = Image.fromarray(possiblePlate.imgPlate,'RGB')
+            Grayscale = Image.fromarray(possiblePlate.imgGrayscale)
+            Thresh = Image.fromarray(possiblePlate.imgThresh)
+            Plate.show()
+            input('Press Enter to Continue....')
+            Grayscale.show()
+            input('Press Enter to Continue....')
+            Thresh.show()
+            input('Press Enter to Continue....')
+            
         possiblePlate.imgThresh = cv2.resize(possiblePlate.imgThresh, (0, 0), fx = 1.6, fy = 1.6,interpolation=cv2.INTER_LINEAR)
 
                 # threshold again to eliminate any gray areas
         thresholdValue, possiblePlate.imgThresh = cv2.threshold(possiblePlate.imgThresh, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-		# This clears the image more removing all the unknown noise from it.
+        # This clears the image more removing all the unknown noise from it.
         if Main.showSteps == True: # show steps ###################################################
-            cv2.imshow("imgThresh_gray_remover", possiblePlate.imgThresh)
-            cv2.waitKey(0)
+            Image.fromarray(possiblePlate.imgThresh).show()
+            input('Press Enter to Continue....')
         # end if # show steps #####################################################################
 
                 # find all possible chars in the plate,
@@ -97,24 +103,24 @@ def detectCharsInPlates(listOfPossiblePlates):
 
             cv2.drawContours(imgContours, contours, -1, Main.SCALAR_WHITE)
             #print('These are the possible characters in the plate :')
-
-            cv2.imshow("Possible_chars_in_plate", imgContours)
-            cv2.waitKey(0)
+            imgContours = Image.fromarray(imgContours,'RGB')
+            imgContours.show()
+            input('Press Enter to Continue....')
         # end if # show steps #####################################################################
 
                 # given a list of all possible chars, find groups of matching chars within the plate
         listOfListsOfMatchingCharsInPlate = findListOfListsOfMatchingChars(listOfPossibleCharsInPlate)
-        if (len(listOfListsOfMatchingCharsInPlate) == 0):			# if no groups of matching chars were found in the plate
+        if (len(listOfListsOfMatchingCharsInPlate) == 0):            # if no groups of matching chars were found in the plate
             #print('\nNo matching characters found:')
             if Main.showSteps == True: # show steps ###############################################
                 print("chars found in plate number " + str(intPlateCounter) + " = (none), click on any image and press a key to continue . . .")
                 intPlateCounter = intPlateCounter + 1
 
-                cv2.destroyAllWindows()
+                
             # end if # show steps #################################################################
 
             possiblePlate.strChars = ""
-            continue						# go back to top of for loop
+            continue                        # go back to top of for loop
         # end if
 
         if Main.showSteps == True: # show steps ###################################################
@@ -131,8 +137,9 @@ def detectCharsInPlates(listOfPossiblePlates):
                 # end for
                 cv2.drawContours(imgContours, contours, -1, (intRandomBlue, intRandomGreen, intRandomRed))
             # end for
-            cv2.imshow("A_Complete_plate", imgContours)
-            cv2.waitKey(0)
+            imgContours = Image.fromarray(imgContours,'RGB')
+            imgContours.show()
+            input('Press Enter to Continue....')
         # end if # show steps #####################################################################
 
         for i in range(0, len(listOfListsOfMatchingCharsInPlate)):                              # within each list of matching chars
@@ -156,8 +163,9 @@ def detectCharsInPlates(listOfPossiblePlates):
 
                 cv2.drawContours(imgContours, contours, -1, (intRandomBlue, intRandomGreen, intRandomRed))
             # end for
-            cv2.imshow("Remove_Overlapping", imgContours)
-            cv2.waitKey(0)
+            imgContours = Image.fromarray(imgContours,'RGB')
+            imgContours.show()
+            input('Press Enter to Continue....')
         # end if # show steps #####################################################################
 
                 # within each possible plate, suppose the longest list of potential matching chars is the actual list of chars
@@ -184,28 +192,26 @@ def detectCharsInPlates(listOfPossiblePlates):
             # end for
 
             cv2.drawContours(imgContours, contours, -1, Main.SCALAR_WHITE)
-
-            cv2.imshow("The_Longest_list_of_matching_chars", imgContours)
-            cv2.waitKey(0)
+            imgContours = Image.fromarray(imgContours,'RGB')
+            imgContours.show()
+            
+            #cv2.imshow("The_Longest_list_of_matching_chars", imgContours)
+            #cv2.waitKey(0)
         # end if # show steps #####################################################################
 
         possiblePlate.strChars = recognizeCharsInPlate(possiblePlate.imgThresh, longestListOfMatchingCharsInPlate)
         #print('this character is recognized :',possiblePlate.strChars)
-        if Main.showSteps == True:
-            cv2.destroyAllWindows()
         listOfPossiblePlates_refined.append(possiblePlate)
 
         if Main.showSteps == True: # show steps ###################################################
             print("chars found in plate number " + str(intPlateCounter) + " = " + possiblePlate.strChars + ", click on any image and press a key to continue . . .")
             intPlateCounter = intPlateCounter + 1
-            cv2.waitKey(0)
         # end if # show steps #####################################################################
 
     # end of big for loop that takes up most of the function
 
     if Main.showSteps == True:
         print("\nchar detection complete, click on any image and press a key to continue . . .\n")
-        cv2.waitKey(0)
     # end if
     return listOfPossiblePlates_refined # we return the list of plates with the probable plate number of each plate.
 
@@ -258,7 +264,6 @@ def findListOfListsOfMatchingChars(listOfPossibleChars):
         #cv2.waitKey(0)
 
         listOfMatchingChars = findListOfMatchingChars(possibleChar, listOfPossibleChars)        # find all chars in the big list that match the current char
-        #cv2.destroyAllWindows()
         listOfMatchingChars.append(possibleChar)                # also add the current char to current possible list of matching chars
         if len(listOfMatchingChars) < MIN_NUMBER_OF_MATCHING_CHARS:     # if current possible list of matching chars is not long enough to constitute a possible plate
             #print('Now a plate is complete')
@@ -397,32 +402,30 @@ def recognizeCharsInPlate(imgThresh, listOfMatchingChars):
         pt2 = ((currentChar.intBoundingRectX + currentChar.intBoundingRectWidth), (currentChar.intBoundingRectY + currentChar.intBoundingRectHeight))
 
         cv2.rectangle(imgThreshColor2, pt1, pt2, (255,0,0), 2)           # draw green box around the char
-        #cv2.imshow('The Plate',imgThreshColor2)
-        #cv2.waitKey(0)
                 # crop char out of threshold image
         imgROI = imgThreshColor[currentChar.intBoundingRectY : currentChar.intBoundingRectY + currentChar.intBoundingRectHeight,currentChar.intBoundingRectX : currentChar.intBoundingRectX + currentChar.intBoundingRectWidth]
         imgROI = cv2.copyMakeBorder(imgROI,8,8,8,8,cv2.BORDER_CONSTANT,value = [255,255,255])
 
-                # crop char out of threshold image
-        #cv2.imshow('The character',imgROI)
-        #cv2.waitKey(0)
+                # crop char out of threshold image    
+        Image.fromarray(imgROI,'RGB').show()
+        input('Press Enter to Continue....')
         imgROIResized = cv2.resize(imgROI, (RESIZED_CHAR_IMAGE_WIDTH, RESIZED_CHAR_IMAGE_HEIGHT),interpolation=cv2.INTER_LINEAR)           # resize image, this is necessary for char recognition
         #print('The shape is :',imgROIResized.shape)
-        #cv2.imshow('The character',imgROIResized)
-        #cv2.waitKey(0)
-        """response = str(input('Want to save the image: '))
+        Image.fromarray(imgROI,'RGB').show()
+        input('Press Enter to Continue....')
+        
+        response = str(input('Want to save the image: '))
         if response == 'Y':
-        	name = str(input('Enter the name: '))
-	        cv2.imwrite(name, imgROIResized)
-        """
+            name = str(input('Enter the name: '))
+            cv2.imwrite(name, imgROIResized)
         img=np.reshape(imgROIResized,[1,64,64,3])
 
         classes=model.predict_classes(img)
         #print(classes)
         if classes[0]<10:
-        	strCurrentChar = chr(classes[0]+48) # get character from results
+            strCurrentChar = chr(classes[0]+48) # get character from results
         else:
-        	strCurrentChar = chr(classes[0]+55)	# get character from results
+            strCurrentChar = chr(classes[0]+55)    # get character from results
         print(strCurrentChar)
         strChars = strChars + strCurrentChar                        # append current char to full string
 
@@ -430,8 +433,9 @@ def recognizeCharsInPlate(imgThresh, listOfMatchingChars):
     # end for
 
     if Main.showSteps == True: # show steps #######################################################
-        cv2.imshow("10", imgThreshColor2)
-        cv2.waitKey(0)
+        imgThreshColor2 = Image.fromarray(imgThreshColor2,'RGB')
+        imgThreshColor2.show()
+        input('Press Enter to Continue....')
     # end if # show steps #########################################################################
 
     return strChars

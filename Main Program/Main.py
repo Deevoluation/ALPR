@@ -4,8 +4,10 @@ import cv2
 import numpy as np
 import os
 import time
+import matplotlib.pyplot as plt
 import DetectChars
 import DetectPlates
+from PIL import Image
 import PossiblePlate
 
 # module level variables ##########################################################################
@@ -34,6 +36,7 @@ def main(image):
         return                                                          # and exit program
 
     imgOriginalScene  = cv2.imread(image)               # open image
+    #plt.imshow(imgOriginalScene)
     h, w = imgOriginalScene.shape[:2]
     # As the image may be blurr so we sharpen the image.
     #kernel_shapening4 = np.array([[-1,-1,-1],[-1,9,-1],[-1,-1,-1]])
@@ -41,7 +44,7 @@ def main(image):
     
     #imgOriginalScene = cv2.resize(imgOriginalScene,(1000,600),interpolation = cv2.INTER_LINEAR)
     
-    imgOriginalScene = cv2.resize(imgOriginalScene, (0, 0), fx = 1.4, fy = 1.4,interpolation=cv2.INTER_LINEAR)
+    imgOriginalScene = cv2.resize(imgOriginalScene, (0, 0), fx = 1.4, fy = 1.4,interpolation=cv2.INTER_CUBIC)
     
     #imgOriginalScene = cv2.fastNlMeansDenoisingColored(imgOriginalScene,None,10,10,7,21)
     
@@ -59,7 +62,8 @@ def main(image):
     listOfPossiblePlates = DetectChars.detectCharsInPlates(listOfPossiblePlates)        # detect chars in plates
 
     if showSteps == True:
-        cv2.imshow("imgOriginalScene", imgOriginalScene)            # show scene image
+        imgOriginalScene = Image.fromarray(imgOriginalScene,'RGB').show() # show scene image
+        
 
     if len(listOfPossiblePlates) == 0:                          # if no plates were found
         print("\nno license plates were detected\n")             # inform user no plates were found
@@ -75,8 +79,8 @@ def main(image):
         licPlate = listOfPossiblePlates[0]
 
         if showSteps == True:
-            cv2.imshow("imgPlate", licPlate.imgPlate)           # show crop of plate and threshold of plate
-            cv2.waitKey(0)
+            Image.fromarray(licPlate.imgPlate).show()    # show crop of plate and threshold of plate
+            
         if len(licPlate.strChars) == 0:                     # if no chars were found in the plate
             print("\nno characters were detected\n\n")       # show message
             return ' ',imgOriginalScene                                       # and exit program
@@ -90,10 +94,10 @@ def main(image):
         if showSteps == True:
             writeLicensePlateCharsOnImage(imgOriginalScene, licPlate)           # write license plate text on the image
 
-            cv2.imshow("imgOriginalScene", imgOriginalScene)                # re-show scene image
+            Image.fromarray(imgOriginalScene).show()                # re-show scene image
 
             cv2.imwrite("imgOriginalScene.png", imgOriginalScene)           # write image out to file
-            cv2.waitKey(0)                    # hold windows open until user presses a key
+            input('Press any key to continue...')                    # hold windows open until user presses a key
 
     return licPlate.strChars,licPlate.imgPlate
 ###################################################################################################
@@ -157,7 +161,7 @@ if __name__ == "__main__":
     start = time.time()
     result = []
     count = 0
-    os.chdir('Test')
+    os.chdir('Test_car_images_dataset')
     for f in os.listdir():
         y_test,ext = os.path.splitext(f)
         y_pred,_ = main(f)
@@ -185,4 +189,6 @@ if __name__ == "__main__":
     print('time taken :',time.time() - start)
     #print(result)
     """
-    #main('OS269DT.jpg')
+    main('OS269DT.jpg')
+    
+    
