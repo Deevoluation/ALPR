@@ -3,6 +3,7 @@
 
 # **Softwares and Technology used :**
 - OpenCV 3
+- PIL
 - Python 3
 - Tensor Flow
 - MongoDB
