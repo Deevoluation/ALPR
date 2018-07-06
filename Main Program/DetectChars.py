@@ -67,16 +67,6 @@ def detectCharsInPlates(listOfPossiblePlates):
         #possiblePlate.imgPlate = cv2.equalizeHist(possiblePlate.imgPlate)
         possiblePlate.imgGrayscale, possiblePlate.imgThresh = Preprocess.preprocess(possiblePlate.imgPlate)     # preprocess to get grayscale and threshold images
 
-        if Main.showSteps == True: # show steps ###################################################
-            Plate = Image.fromarray(possiblePlate.imgPlate,'RGB')
-            Grayscale = Image.fromarray(possiblePlate.imgGrayscale)
-            Thresh = Image.fromarray(possiblePlate.imgThresh)
-            Plate.show()
-            input('Press Enter to Continue....')
-            Grayscale.show()
-            input('Press Enter to Continue....')
-            Thresh.show()
-            input('Press Enter to Continue....')
             
         possiblePlate.imgThresh = cv2.resize(possiblePlate.imgThresh, (0, 0), fx = 1.6, fy = 1.6,interpolation=cv2.INTER_LINEAR)
 
@@ -407,17 +397,18 @@ def recognizeCharsInPlate(imgThresh, listOfMatchingChars):
         imgROI = cv2.copyMakeBorder(imgROI,8,8,8,8,cv2.BORDER_CONSTANT,value = [255,255,255])
 
                 # crop char out of threshold image    
-        Image.fromarray(imgROI,'RGB').show()
-        input('Press Enter to Continue....')
+        #Image.fromarray(imgROI,'RGB').show()
+        #input('Press Enter to Continue....')
         imgROIResized = cv2.resize(imgROI, (RESIZED_CHAR_IMAGE_WIDTH, RESIZED_CHAR_IMAGE_HEIGHT),interpolation=cv2.INTER_LINEAR)           # resize image, this is necessary for char recognition
         #print('The shape is :',imgROIResized.shape)
-        Image.fromarray(imgROI,'RGB').show()
-        input('Press Enter to Continue....')
-        
+        #Image.fromarray(imgROI,'RGB').show()
+        #input('Press Enter to Continue....')
+        """
         response = str(input('Want to save the image: '))
         if response == 'Y':
             name = str(input('Enter the name: '))
             cv2.imwrite(name, imgROIResized)
+        """
         img=np.reshape(imgROIResized,[1,64,64,3])
 
         classes=model.predict_classes(img)

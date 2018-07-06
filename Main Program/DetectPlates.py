@@ -8,6 +8,7 @@ import random
 import matplotlib.pyplot as plt
 import Preprocess
 import DetectChars
+from PIL import Image
 import PossiblePlate
 import PossibleChar
 
@@ -82,8 +83,8 @@ def detectPlatesInScene(imgOriginalScene):
             #cv2.drawContours(imgContours, contours, -1, (255, 255, 255))
             cv2.drawContours(imgContours, contours, -1, (intRandomBlue, intRandomGreen, intRandomRed))
         # end for
-            from PIL import Image
-            imgContours = Image.fromarray(imgContours,'RGB').show()
+            
+            #imgContours = Image.fromarray(imgContours,'RGB').show()
             
         
     # end if # show steps #########################################################################
@@ -112,7 +113,7 @@ def detectPlatesInScene(imgOriginalScene):
             #cv2.imshow("4a", imgContours)
             
             print("possible plate " + str(i) + ", click on any image and press a key to continue . . .")
-            Image.fromarray(listOfPossiblePlates[i].imgPlate,'RGB').show()
+            #Image.fromarray(listOfPossiblePlates[i].imgPlate,'RGB').show()
             
         # end for
         print("\nplate detection complete, press a key to begin char recognition . . .\n")
@@ -139,7 +140,7 @@ def findPossibleCharsInScene(imgThresh):
 
         if Main.showSteps == True: # show steps ###################################################
             cv2.drawContours(imgContours, contours, i, Main.SCALAR_YELLOW)
-            Image.fromarray(imgContours,'RGB').show()
+            #Image.fromarray(imgContours,'RGB').show()
             
         possibleChar = PossibleChar.PossibleChar(contours[i]) # Here we calculate the x,y,w,h,flatdiagonalsize,aspedctratio,area and (x,y) of the center of the rectangle that is bounding the contour.
 

@@ -17,7 +17,7 @@ SCALAR_YELLOW = (0.0, 255.0, 255.0)
 SCALAR_GREEN = (0.0, 255.0, 0.0)
 SCALAR_RED = (0.0, 0.0, 255.0)
 
-showSteps = False
+showSteps = True
 
 def main(image):
 
@@ -62,7 +62,7 @@ def main(image):
     listOfPossiblePlates = DetectChars.detectCharsInPlates(listOfPossiblePlates)        # detect chars in plates
 
     if showSteps == True:
-        imgOriginalScene = Image.fromarray(imgOriginalScene,'RGB').show() # show scene image
+        Image.fromarray(imgOriginalScene,'RGB').show() # show scene image
         
 
     if len(listOfPossiblePlates) == 0:                          # if no plates were found
