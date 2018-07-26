@@ -57,7 +57,6 @@ def Launch(video):
     print('\ntime taken = ' + str(time.time() - start))
 
     cap.release()
-    cv2.destroyAllWindows()
     
     return ("{0:.2f}".format(videolength),str(totalFrames))
     

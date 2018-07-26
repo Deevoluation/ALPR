@@ -5,6 +5,7 @@ import datetime
 import videosplit
 import Main
 import cv2
+from PIL import Image
 import pymongo
 
 
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     executionTime = "{0:.2f}".format(endTime - startTime)
     print('The name plate is :', plate, ' frequency is: ', result[plate])
     try:
-        cv2.imshow('The plate', img)
+    	Image.fromarray(img).show()
     except:
         print("Problem in displaying license plate")
     print('execution time is : ' + executionTime)
@@ -54,10 +55,13 @@ if __name__ == '__main__':
         cv2.imwrite(licensePlatePath,img)
     except:
         print("Problem in writing license plate image")
-    cv2.waitKey(0)
+        
+    # If u want to see the freqiencies for predictions then uncomment the below 2 lines.
+    """
     for i in result.keys():
         print(i, ' : ', result[i])
-        
+    """
+     
     #storing data in database
     host = 'localhost'
     database = 'ALPR'

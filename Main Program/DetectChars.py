@@ -412,12 +412,12 @@ def recognizeCharsInPlate(imgThresh, listOfMatchingChars):
         img=np.reshape(imgROIResized,[1,64,64,3])
 
         classes=model.predict_classes(img)
-        #print(classes)
         if classes[0]<10:
             strCurrentChar = chr(classes[0]+48) # get character from results
         else:
             strCurrentChar = chr(classes[0]+55)    # get character from results
-        print(strCurrentChar)
+        if Main.showSteps == True:
+        	print(strCurrentChar)
         strChars = strChars + strCurrentChar                        # append current char to full string
 
 
