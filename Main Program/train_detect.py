@@ -58,6 +58,7 @@ test_set = test_datagen.flow_from_directory('Test',target_size=(64, 64),batch_si
 
 classifier.fit_generator(train_set,steps_per_epoch=47605,epochs=5,validation_data=test_set,validation_steps=1292,callbacks=[csv])
 
+classifier.save('model.h5')
 import cv2 
 import numpy as np
 img=cv2.imread('temp1.jpg')
