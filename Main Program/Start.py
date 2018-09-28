@@ -8,18 +8,25 @@ import cv2
 from PIL import Image
 import pymongo
 
-
+# These are the parameters to set the naming of the database.
+host = 'localhost'
+database = 'ALPR'
+collection = 'videosTest'
+    
 
 
 def mongo_connection():
     con = pymongo.MongoClient(host)
     col = con[database][collection]
+    if col.count()==0:
+        con[database].create_collection(collection)
     return col
 
 
 if __name__ == '__main__':
     name = str(input('Enter the name of the video: '))
     (vdolength,totalFrames) = videosplit.Launch(name)
+	# The name of the folder to store the frames of the video
     os.chdir('data')
 
     result = {}
@@ -36,6 +43,7 @@ if __name__ == '__main__':
 
     #endTime = datetime.now()
     endTime = time.time()
+    # Sort the list of number plates by the frequency of their occurance
     l = {x: y for y, x in result.items()}
     r = list(sorted(l.keys()))
     index = r[len(r) - 1]
@@ -44,7 +52,7 @@ if __name__ == '__main__':
     executionTime = "{0:.2f}".format(endTime - startTime)
     print('The name plate is :', plate, ' frequency is: ', result[plate])
     try:
-    	Image.fromarray(img).show()
+        Image.fromarray(img).show()
     except:
         print("Problem in displaying license plate")
     print('execution time is : ' + executionTime)
@@ -61,11 +69,7 @@ if __name__ == '__main__':
     for i in result.keys():
         print(i, ' : ', result[i])
     """
-     
-    #storing data in database
-    host = 'localhost'
-    database = 'ALPR'
-    collection = 'videosTest'
+    # Store the result into mongodb
     try:
         col = mongo_connection()
         dict = {}
@@ -78,7 +82,6 @@ if __name__ == '__main__':
         dict['frequency ratio'] = "{0:.2f}".format(result[plate] / len(result))
         
         col.insert(dict)
-    except:
-        print("error in mongodb connection or insertion")
-        
+    except Exception as e:
+        print(e)
     

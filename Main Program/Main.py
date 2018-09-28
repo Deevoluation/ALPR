@@ -87,10 +87,11 @@ def main(image):
         # end if
 
         drawRedRectangleAroundPlate(imgOriginalScene, licPlate)             # draw red rectangle around plate
-
+        """
+		# Uncomment this if want to check for individual plate
         print("\nlicense plate read from ", image," :",licPlate.strChars,"\n")
         print("----------------------------------------")
-
+		"""
         if showSteps == True:
             writeLicensePlateCharsOnImage(imgOriginalScene, licPlate)           # write license plate text on the image
 
