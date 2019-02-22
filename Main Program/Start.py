@@ -25,7 +25,7 @@ def mongo_connection():
 
 if __name__ == '__main__':
     name = str(input('Enter the name of the video: '))
-    (vdolength,totalFrames) = videosplit.Launch(name)
+    (vdolength,totalFrames) = videosplit_sklearn.Launch(name)
 	# The name of the folder to store the frames of the video
     os.chdir('data')
 
