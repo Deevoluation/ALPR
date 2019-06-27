@@ -1,4 +1,4 @@
-# **Major Release Coming soon :**
+# **Major Release Coming soon **
 
 # **Problem Statement :**
 - ### `To extract  the registration number of a car entering inside a parking lot.`
