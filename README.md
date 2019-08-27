@@ -1,4 +1,3 @@
-# **Major Release Coming soon **
 
 # **Problem Statement :**
 - ### `To extract  the registration number of a car entering inside a parking lot.`
@@ -10,8 +9,26 @@
 - Tensor Flow
 - MongoDB
 - Anaconda package manager
+- imutils
 
-# Refer to "How to run the program.txt" for instructions on running the code.
+# To-do list
+- [ ] Functionality for video processing
+- [ ] Flask aPI
+- [ ] Web UI
+- [x] Functionality for image
+- [ ] Batch processing of multiple images
+- [ ] Real-time tracking in videos
+
+# How to use
+
+- command to test on an image : `python Launch.py -i <path to the image> -s <specify if to save the intermediate results, True or False> -o <if want to save the intermediate results then specify the path to the folder where to keep them> -sh <Speficy if to see the intemediate results, True or False>`
+
+- command to test on live video : `python Start.py`
+  - Then specify the path to the video file
+    - **(This requires FFMPEG installed, if you don't have then don't worry another version for this functionality will be uploaded soon)**
+
+- A Demo for the working of the script is here
+![Demo](demo/demo.gif)
 
 # INITIAL BACKGROUND
 
