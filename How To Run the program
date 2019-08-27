@@ -1,0 +1,16 @@
+Prerequisites for running the program:-
+
+Python 3
+OpenCV 3
+MongoDB (only for storing the results in database).
+Tensorflow
+Python 3 libraries for ML algorithms
+
+*I would recommend using Anaconda Package Manager which already comes required libraries except OpenCV,TensorFlow and Pymongo
+
+
+Open the Main Program folder and run "Start.py" file in tensorflow environment.
+car6.mp4 video is present as a sample to test the program.
+
+To run the code on a single car image,
+goto "Main.py" file, uncomment last line main('OS269DT.jpg') and only execute this file.
