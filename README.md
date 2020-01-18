@@ -12,7 +12,7 @@
 - imutils
 
 # To-do list
-- [ ] Functionality for video processing
+- [x] Functionality for video processing
 - [ ] Flask aPI
 - [ ] Web UI
 - [x] Functionality for image
@@ -22,10 +22,33 @@
 # How to use
 
 - command to test on an image : `python Launch.py -i <path to the image> -s <specify if to save the intermediate results, True or False> -o <if want to save the intermediate results then specify the path to the folder where to keep them> -sh <Speficy if to see the intemediate results, True or False>`
+- ### Install pipenv
+  - `pip install pipenv` (then try typing pipenv in the terminal. If you get a list of options then it is successful)
+  - If above fails then use `sudo pip install pipenv`
 
-- command to test on live video : `python Start.py`
-  - Then specify the path to the video file
-    - **(This requires FFMPEG installed, if you don't have then don't worry another version for this functionality will be uploaded soon)**
+- ### Start the pipenv shell
+  - `pipenv shell`
+  - Only for the first time running the pipenv shel, run `pipenv install`
+
+- Set up is complete
+
+- **command to test on live video** : `python Start.py`
+  - Then specify the path to the video file``
+
+  - **(This requires FFMPEG installed, if you don't have then don't worry another version for this functionality will be uploaded soon)**
+- **command to test on single image** : `python Launch.py -i <image_name> -s <True or False> -o <folder_name> -sh <True or False>`
+  - Run `python Launch.py -h ` to get this:
+    
+      optional arguments:
+    - -h, --help            show this help message and exit
+    - -i IMAGEPATH, --ImagePath IMAGEPATH
+                        Path to where the image to be processed is placed
+    - -s SAVE_INTERMEDIATE, --Save_intermediate SAVE_INTERMEDIATE
+                        Saved the intermediate results into a folder
+    - -o OUTPUT_FOLDER, --output_folder OUTPUT_FOLDER
+                        Folder where the intermediate images will be saved
+    - -sh SHOWSTEPS, --ShowSteps SHOWSTEPS
+                        To see the intermediate results
 
 - A Demo for the working of the script is here
 ![Demo](demo/demo.gif)
