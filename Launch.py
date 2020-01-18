@@ -215,11 +215,12 @@ def detectCharsInPlates(listOfPossiblePlates,save_intermediate,output_folder,sho
             
         # end if # show steps #####################################################################
 
-        """
+        
         # within each possible plate, suppose the longest list of potential matching chars is the actual list of chars
         intLenOfLongestListOfChars = 0
         intIndexOfLongestListOfChars = 0
 
+        """
                 # loop through all the vectors of matching chars, get the index of the one with the most chars
         for i in range(0, len(listOfListsOfMatchingCharsInPlate)):
             if len(listOfListsOfMatchingCharsInPlate[i]) > intLenOfLongestListOfChars:
@@ -228,19 +229,24 @@ def detectCharsInPlates(listOfPossiblePlates,save_intermediate,output_folder,sho
             # end if
         # end for
 
-        """
         # suppose that the longest list of matching chars within the plate is the actual list of chars
         #longestListOfMatchingCharsInPlate = listOfListsOfMatchingCharsInPlate[intIndexOfLongestListOfChars]
 
+        """
+        listOfListsOfMatchingCharsInPlate = sorted(listOfListsOfMatchingCharsInPlate,key=lambda x:len(x))
         # All the left plates till now are elligible to be potential part of a number plate
-        #longestListOfMatchingCharsInPlate = listOfListsOfMatchingCharsInPlate
-
+        if len(listOfListsOfMatchingCharsInPlate) > 1:
+            longestListOfMatchingCharsInPlate = listOfListsOfMatchingCharsInPlate[-2:]
+            longestListOfMatchingCharsInPlate = sorted(longestListOfMatchingCharsInPlate,key=lambda x:x[0].intCenterY)
+        else:
+            longestListOfMatchingCharsInPlate = [listOfListsOfMatchingCharsInPlate[0]]
+        
         if showSteps == True or save_intermediate == True: # show steps ###################################################
             imgContours = np.zeros((height, width, 3), np.uint8)
             del contours[:]
 
-            for longestListOfMatchingCharsInPlate in listOfListsOfMatchingCharsInPlate:
-                for matchingChar in longestListOfMatchingCharsInPlate:
+            for ListOfCharsInPlate in listOfListsOfMatchingCharsInPlate:
+                for matchingChar in ListOfCharsInPlate:
                     contours.append(matchingChar.contour)
             # end for
 
@@ -255,7 +261,7 @@ def detectCharsInPlates(listOfPossiblePlates,save_intermediate,output_folder,sho
             cv2.imwrite("%s/The_Longest_list_of_matching_chars.png"%(output_folder), imgContours)
             
 
-        possiblePlate.strChars = recognizeCharsInPlate(possiblePlate.imgThresh, listOfListsOfMatchingCharsInPlate,save_intermediate,output_folder,showSteps)
+        possiblePlate.strChars = recognizeCharsInPlate(possiblePlate.imgThresh, longestListOfMatchingCharsInPlate,save_intermediate,output_folder,showSteps)
         if showSteps == True:
             cv2.destroyAllWindows()
         listOfPossiblePlates_refined.append(possiblePlate)
@@ -504,7 +510,6 @@ def recognizeCharsInPlate(imgThresh, ListOflistOfMatchingChars,save_intermediate
     imgThreshColor_plot = imgThreshColor.copy()
     
     # String recognized from each line of the number plate
-    strCharsList = []
     for listOfMatchingChars in ListOflistOfMatchingChars:
 
         # sort chars from left to right
@@ -516,12 +521,7 @@ def recognizeCharsInPlate(imgThresh, ListOflistOfMatchingChars,save_intermediate
 
             cv2.rectangle(imgThreshColor_plot, pt1, pt2, (255,0,0), 2)           # draw green box around the char
             
-            if showSteps == True:
-                cv2.imshow('The Plate',imgThreshColor_plot)
-                cv2.waitKey(0)
             
-            if save_intermediate == True:
-                cv2.imwrite('%s/The Plate.png'%(output_folder),imgThreshColor_plot)
                 
             
             # crop char out of threshold image
@@ -545,7 +545,17 @@ def recognizeCharsInPlate(imgThresh, ListOflistOfMatchingChars,save_intermediate
                 strCurrentChar = chr(classes[0]+55)    # get character from results
             
             strChars = strChars + strCurrentChar                        # append current char to full string
-        strCharsList.append(strChars)
+
+            if showSteps == True:
+                cv2.imshow('The Plate',imgThreshColor_plot)
+                print(strChars)
+                cv2.waitKey(0)
+            
+            if save_intermediate == True:
+                cv2.imwrite('%s/The Plate.png'%(output_folder),imgThreshColor_plot)
+
+        strChars = strChars + ' '
+
         # end for
 
     if showSteps == True: # show steps #######################################################
@@ -556,7 +566,7 @@ def recognizeCharsInPlate(imgThresh, ListOflistOfMatchingChars,save_intermediate
         cv2.imwrite('%s/full annotated image.png'%(output_folder),imgThreshColor_plot)
     # end if # show steps #########################################################################
 
-    return '\n'.join(strCharsList)
+    return strChars
 # end function
 
 
@@ -701,7 +711,6 @@ def main(img_path,save_intermediate,output_folder,showSteps):
     	print('No Plate Found')
     	return ' ',img_plate
     else:
-        print(len(Refined_plate))
         return Refined_plate[0].strChars,img_plate
 
 if __name__ == '__main__':
@@ -711,7 +720,7 @@ if __name__ == '__main__':
     ap.add_argument("-i", "--ImagePath", required=True,help="Path to where the image to be processed is placed")
     ap.add_argument("-s","--Save_intermediate",required=False,default=False,type=bool,help="Saved the intermediate results into a folder")
     ap.add_argument("-o","--output_folder",required=False,default=None,help="Folder where the intermediate images will be saved")
-    ap.add_argument("-sh","--ShowSteps",required=False,default=False,help="To see the intermediate results")
+    ap.add_argument("-sh","--ShowSteps",required=False,default=False,type=bool,help="To see the intermediate results")
 
     args = ap.parse_args()
 
@@ -719,7 +728,7 @@ if __name__ == '__main__':
         print("Output folder to save the intemedaite images should be specified")
         exit()
     
-    if os.path.exists(args.output_folder) == False:
+    if args.output_folder!=None and os.path.exists(args.output_folder) == False:
         os.mkdir(args.output_folder)
 
     number_plate_text,plate = main(args.ImagePath,args.Save_intermediate,args.output_folder,args.ShowSteps)
