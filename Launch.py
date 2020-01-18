@@ -535,7 +535,10 @@ def recognizeCharsInPlate(imgThresh, ListOflistOfMatchingChars,save_intermediate
             imgROI = cv2.cvtColor(imgROI, cv2.COLOR_BGR2GRAY)
             imgROIResized = cv2.resize(imgROI, (RESIZED_CHAR_IMAGE_WIDTH, RESIZED_CHAR_IMAGE_HEIGHT),interpolation=cv2.INTER_LINEAR)           # resize image, this is necessary for char recognition
             
-            img=np.reshape(imgROIResized,[1,64,64,1])
+            # Pick the number of channels from the currently loaded model.
+            channels = model.input.shape[-1].value
+            
+            img=np.reshape(imgROIResized,[1,64,64,channels])
 
             classes=model.predict_classes(img)
             
