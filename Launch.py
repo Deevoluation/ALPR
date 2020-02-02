@@ -685,7 +685,7 @@ def CapturePlatesFromImage(image):
     
     return imgResult
 
-def main(img_path,save_intermediate,output_folder,showSteps):
+def main(img_path,save_intermediate=False,output_folder=False,showSteps=False):
     
     # Get the Plates from the Image
     img_plate = CapturePlatesFromImage(img_path)
