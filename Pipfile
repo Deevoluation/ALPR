@@ -10,7 +10,7 @@ pillow = "*"
 opencv-python = "==3.4.1.15"
 matplotlib = "*"
 keras = "==2.2.5"
-tensorflow = "==1.14"
+tensorflow = "==1.15.2"
 
 [requires]
 python_version = "3.5"
