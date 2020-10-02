@@ -13,7 +13,6 @@ import Preprocess
 import PossibleChar
 import PossiblePlate
 import os
-from matplotlib import pyplot as plt
 from PIL import Image
 from keras.models import load_model
 import tensorflow as tf
@@ -656,7 +655,7 @@ def CapturePlatesFromImage(image):
     MODEL_NAME = 'plate_detector' # This is the model we will use here.
     
     # Path to frozen detection graph. This is the actual model that is used for the object detection.
-    PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb' # Path to save the downloaded model.
+    PATH_TO_CKPT = os.path.join(os.path.abspath(__file__), '..', MODEL_NAME, 'frozen_inference_graph.pb') # Path to save the downloaded model.
     detection_graph = tf.Graph()
     with detection_graph.as_default():
       od_graph_def = tf.GraphDef()

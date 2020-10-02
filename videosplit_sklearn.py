@@ -10,7 +10,7 @@ import numpy as np
 import os
 import time
 import shutil
-import scipy.misc
+import cv2
 
 def Launch(video):
     start = time.time()
@@ -43,7 +43,7 @@ def Launch(video):
         if(count % interval == 0):
             frame_no += 1
             name = './data/frame' + str(frame_no) + '.jpg'
-            scipy.misc.imsave(name,frame) 
+            cv2.imwrite(name,frame) 
         count += 1
     
     print( "total frames generated = : ",frame_no)   

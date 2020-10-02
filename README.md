@@ -22,6 +22,9 @@
 # How to use
 
 - command to test on an image : `python Launch.py -i <path to the image> -s <specify if to save the intermediate results, True or False> -o <if want to save the intermediate results then specify the path to the folder where to keep them> -sh <Speficy if to see the intemediate results, True or False>`
+- ### Install FFMPEG
+	- For Linux : sudo apt-get install ffmpeg
+	- For Windows: https://ffmpeg.org/download.html
 - ### Install pipenv
   - `pip install pipenv` (then try typing pipenv in the terminal. If you get a list of options then it is successful)
   - If above fails then use `sudo pip install pipenv`
