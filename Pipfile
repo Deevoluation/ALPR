@@ -11,6 +11,11 @@ opencv-python = "==3.4.1.15"
 matplotlib = "*"
 keras = "==2.2.5"
 tensorflow = "==1.15.4"
+scikit-video = "*"
+importlib-metadata = "==1.0.0"
+object-detection = "*"
+ffmpeg = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.5"
